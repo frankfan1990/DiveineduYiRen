@@ -46,42 +46,7 @@ class LoginViewController: UIViewController {
     
     func basicUIConfig(){
         
-        //
-        #if false
-        loginLabel = UILabel(frame: CGRectMake(0, 60, UIScreen.mainScreen().bounds.size.width, 50))
-        loginLabel?.font = UIFont.systemFontOfSize(45)
-        loginLabel?.textColor = UIColor.greenColor()
-        loginLabel?.text = "注册登陆"
-        loginLabel?.textAlignment = .Center
-        view.addSubview(loginLabel!)
-       
-        
-        //
-        nameLable = UILabel(frame: CGRectMake(30, 170, 100, 50))
-        nameLable?.font = UIFont.systemFontOfSize(20)
-        nameLable?.textColor = UIColor.greenColor()
-        nameLable?.text = "用户名:"
-        nameLable?.textAlignment = .Right
-        view.addSubview(nameLable!)
-            
-        //
-        passLabel = UILabel(frame: CGRectMake(30, 240, 100, 50))
-        passLabel?.font = UIFont.systemFontOfSize(20)
-        passLabel?.textColor = UIColor.greenColor()
-        passLabel?.text = "密码:"
-        passLabel?.textAlignment = .Right
-        view.addSubview(passLabel!)
-
-            let divLabel = UILabel(frame: CGRectMake(0, UIScreen.mainScreen().bounds.size.height - 100, UIScreen.mainScreen().bounds.size.width, 50))
-            
-            divLabel.font = UIFont.systemFontOfSize(20)
-            divLabel.textColor = UIColor.orangeColor()
-            divLabel.text = "戴维营教育-靠谱的教育"
-            divLabel.textAlignment = .Center
-            view.addSubview(divLabel)
-
-         #endif
-            
+                    
         //MARK: - 用户名输入
         nameInput = self.createTextFieldWith(2001, placeholder: "请输入用户名")
         view.addSubview(nameInput!)
