@@ -152,13 +152,14 @@ extension MoreViewController:UITableViewDelegate,UITableViewDataSource{
             HUD.show(.Progress)
             
             /*if中的逻辑现在是伪装的，release版本将被撤销*/
+            //因为还没有实现保持登陆，因此这里用来这个逻辑，那就是通过直接移除掉本地文件来达到注销的目的，没有与服务器通信
             if(true){
             
                 ConstantPara.dealyWithTimeInterval(2, f: { 
                   
                     ConstantPara.clearCachedWithKey(ConstantPara.loginedKey)
                     
-                    HUD.flash(.LabeledSuccess(title: "注销成功", subtitle: nil), delay: 1)
+                HUD.flash(.LabeledSuccess(title: "注销成功", subtitle: nil), delay: 1)
                     
                     #if false
                     let appdelegate = UIApplication.sharedApplication().delegate as! AppDelegate
@@ -180,17 +181,14 @@ extension MoreViewController:UITableViewDelegate,UITableViewDataSource{
                     
                     NSNotificationCenter.defaultCenter().postNotificationName(ConstantPara.notiKey, object: nil)
                     
-//                    ConstantPara.clearCachedWithKey(ConstantPara.loginedKey)
+//
                     
                 })
                 
                 return
 
             }
-            
-            
-            
-//            let userModel = ConstantPara.cachedObjForKey(ConstantPara.loginedKey) as? UserModel
+
             
             Alamofire.request(.POST, ConstantPara.logoutAPI, parameters: [ConstantPara.loginedKey:(usermodel.userName),ConstantPara.session_token:(usermodel.session_token)], encoding: .JSON, headers: nil).responseJSON(completionHandler: { response in
                 
