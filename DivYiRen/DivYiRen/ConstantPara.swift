@@ -78,7 +78,7 @@ struct ConstantPara {
     static func isKeyCached(key:String)->Bool{
         
         let testPath = baseDocPath + "/" + key
-         print(testPath)
+//         print(testPath)
         if(NSFileManager.defaultManager().fileExistsAtPath(testPath) == true){
         
             return true

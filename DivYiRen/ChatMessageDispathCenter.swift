@@ -10,6 +10,13 @@ import UIKit
 import Starscream
 import Alamofire
 
+/*消息处理中心，这个对象充当socket的代理对象，会收到socket所有传过来的消息，这个对象负责将消息分发到正在与之聊天的对象以及收集相应的未读消息，供给未读消息的显示与缓存*/
+
+/*
+ 
+这里需要注意的问题是：当socket断掉时，重新连接的前提是有没有断网【这里是以判断是否能访问baidu为依据】，但是当重新连接到网络时，socket并不会再去连接，因此这里的处理方式是使用Reachability框架，当检测到再次网络连接时，再创建socket
+ */
+
 class ChatMessageDispathCenter:WebSocketDelegate,DetailMessageWhoWithChatDelegate,addressBookFriendListDelegate{
 
     static let shareMessageCenter = ChatMessageDispathCenter()
@@ -30,7 +37,6 @@ class ChatMessageDispathCenter:WebSocketDelegate,DetailMessageWhoWithChatDelegat
     
     func websocketDidDisconnect(socket: WebSocket, error: NSError?) {
         
-//        let appdelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         
         Alamofire.request(.GET, "http://www.baidu.com", parameters: nil, encoding: .JSON, headers: nil).responseJSON { response in
             

@@ -10,6 +10,8 @@ import UIKit
 import Alamofire
 import PKHUD
 
+/*在这个界面可以接受请求和拒绝请求*/
+
 class VerifyViewController: UIViewController {
 
     var tableView:UITableView?
@@ -39,9 +41,6 @@ class VerifyViewController: UIViewController {
         
         userModel = ConstantPara.cachedObjForKey(ConstantPara.loginedKey) as? UserModel
   
-        
-        
-        
         
     }
     

@@ -10,6 +10,10 @@ import UIKit
 import PKHUD
 import Alamofire
 
+/*其余的功能都集成在这个里面，其中『清除缓存还没去实现』*/
+
+/*当有人请求加我为好友时，『等待验证row会有相应的提示，可以点击跳转到相应的界面，若没有任何提示则无法点击』*/
+
 class MoreViewController: UIViewController {
 
     var addressBookRef:AddressBookViewController?

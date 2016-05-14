@@ -19,22 +19,10 @@ struct Utils {
     }
     
     static func timeStamp_now()->Int{
-        
-        /*
-         let dataFomatter = NSDateFormatter()
-         dataFomatter.dateFormat = "yyy-MM-dd HH:mm:ss"
-         let dateString = dataFomatter.stringFromDate(NSDate())
-         dataFomatter.timeZone = NSTimeZone(abbreviation: "GMT")
-         let date = dataFomatter.dateFromString(dateString)
-         */
-        
+
         let timeInterVal = NSDate().timeIntervalSince1970
         return Int(timeInterVal)
     }
-    
-
-    
-    
-    
+  
     
 }

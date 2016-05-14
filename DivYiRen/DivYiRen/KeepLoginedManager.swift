@@ -11,6 +11,8 @@ import Alamofire
 
 
 /*保持登陆功能先不实现*/
+/*通过轮询的方式保持登陆*/
+
 class KeepLoginedManager{
 
     static let shareLoginedManager = KeepLoginedManager()

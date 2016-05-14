@@ -9,6 +9,7 @@
 import UIKit
 import Starscream
 
+/*创建webSocket的单例类*/
 class WebSocketManager{
 
     static let shareWebSocketManager = WebSocketManager()
@@ -30,12 +31,6 @@ class WebSocketManager{
         }
     
     }
-    
-    deinit{
-    
-        print("webSocket 单例死亡")
-    }
-    
-    
+
     
 }
