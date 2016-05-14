@@ -9,6 +9,10 @@
 import UIKit
 import Starscream
 
+/*这个界面登陆成功后出现，就是主界面，这个界面显示的是最近的聊天列表*/
+/*
+ 这个界面一进来就会创建一个webSocket的连接【仅一次】
+ */
 
 protocol ViewControllSynChatMessageHistoryDelegate{
     
@@ -112,24 +116,10 @@ class ViewController: UIViewController{
   
     deinit{
     
-        #if false
-        let appdelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        
-        if(appdelegate.webSocket != nil){
-        
-            if(appdelegate.webSocket!.isConnected){
-                
-                appdelegate.webSocket!.disconnect()
-            }
-
-        }
-        #endif
-        
         if(WebSocketManager.shareWebSocketManager.webSocket!.isConnected == true){
         
             WebSocketManager.shareWebSocketManager.webSocket?.disconnect()
         }
-        
         
         print("主页面被销毁...")
     }
@@ -153,9 +143,6 @@ class ViewController: UIViewController{
         }
 
     }
-    
-    
-    
     
 }
 
@@ -209,15 +196,10 @@ extension ViewController:UITableViewDelegate,UITableViewDataSource{
         let unreadedMessageCachedKey = (usermodel.userName as String) + ConstantPara.unreadMessageCacheKey
         if(ConstantPara.isKeyCached(unreadedMessageCachedKey)){
         
-//            let unreadedMessageList:NSMutableArray = (ConstantPara.cachedObjForKey(unreadedMessageCachedKey) as? NSMutableArray)!
-            
             let detaiVC = DetailMessageViewController()
             
             detaiVC.titleName = chatHistoryListModel.friendName
             
-         
-//            detaiVC.unreadedMessageList = unreadedMessageList.mutableCopy() as! NSMutableArray
-           
             
             self.navigationController?.pushViewController(detaiVC, animated: true)
             tableView.deselectRowAtIndexPath(indexPath, animated: true)

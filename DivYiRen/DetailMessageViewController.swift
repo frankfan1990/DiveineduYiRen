@@ -9,6 +9,9 @@
 import UIKit
 import Starscream
 
+/*聊天界面*/
+/*在这个界面里，利用protocol告知消息分发中心此时正在与谁聊天，消息中心会将收到的消息对应的发送到正在与之聊天的对象*/
+
 protocol DetailMessageWhoWithChatDelegate {
     
     func whoWithChat(friendName:String)
@@ -80,29 +83,7 @@ class DetailMessageViewController: UIViewController{
         
             ConstantPara.updateCachedWithKey(key, andObj: self.messages)
         }
-        
 
-        
-        
-        #if false //过期
-        self.socket?.connect()
-        let appdelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        
-        print(appdelegate.webSocket)
-        appdelegate.webSocket.connect()
-        
-        
-        
-        //MARK: - test
-        let chatModel = ChatMessageModel(from: (userModel?.userName)! as String, to: titleName!, timestamp: Utils.timeStamp_now(), msgtype:"text", msgcontent: "hello_world")
-        
-        let jsonString = JSONSerializer.toJson(chatModel)
-        
-        self.socket?.writeString(jsonString)
-        #endif
-
-        
-        
         
         view.addSubview(textInput)
         textInputConfig()
@@ -120,12 +101,7 @@ class DetailMessageViewController: UIViewController{
         
         self.scrollToBottom()
     }
-    
-    
-    
-    
-    
-    
+      
     func textInputConfig(){
         
         textInput.backgroundColor = UIColor(red: 0.9, green: 0.9, blue: 0.9, alpha: 0.9)
@@ -162,7 +138,7 @@ class DetailMessageViewController: UIViewController{
         }
     }
     
-    //MARK:- keyBoard noti callBack-Handle
+    //MARK:- keyBoard noti callBack-Handle 键盘出现
     func keyBoardCallBackHandle(notification:NSNotification){
         
         
@@ -187,8 +163,6 @@ class DetailMessageViewController: UIViewController{
         }
 
         
-        
-//        print("--\(notification)")
     }
     
     //键盘收起回调
@@ -208,9 +182,6 @@ class DetailMessageViewController: UIViewController{
             self.view.layoutIfNeeded()
         }
         
-//        print("--\(noti)")
-
-        
     }
    
     //MARK: - 消息回调
@@ -221,18 +192,7 @@ class DetailMessageViewController: UIViewController{
         self.messages.append(messageModel)
         
         self.scrollToBottom()
-        /*
-        let indexPath = NSIndexPath(forRow: (messages.count-1), inSection: 0)
-        dispatch_async(dispatch_get_main_queue()) {
-            
-            self.tableView?.reloadData()
-            ConstantPara.dealyWithTimeInterval(0.12) {
-                
-                self.tableView?.scrollToRowAtIndexPath(indexPath, atScrollPosition: UITableViewScrollPosition.Top, animated: true)
-            }
-            
-        }*/
-        
+
         ConstantPara.updateCachedWithKey(key, andObj: self.messages)
     }
     
@@ -292,50 +252,21 @@ extension DetailMessageViewController:UITableViewDelegate,UITableViewDataSource,
         let chatModel = ChatMessageModel(from: (userModel?.userName)! as String, to: titleName!, timestamp: Utils.timeStamp_now(), msgtype:"text", msgcontent: (self.textInput.text)!)
         
         let jsonString = JSONSerializer.toJson(chatModel)
-        
-        let appdelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        
-        #if false
-        if(appdelegate.webSocket!.isConnected){
-            
-            print(appdelegate.webSocket)
-            appdelegate.webSocket!.writeString(jsonString)
-        }else{
-            
-            appdelegate.webSocket!.connect()
-        }
-        #endif
-        
+ 
         if(WebSocketManager.shareWebSocketManager.webSocket!.isConnected == true){
         
             print(WebSocketManager.shareWebSocketManager.webSocket!)
             WebSocketManager.shareWebSocketManager.webSocket!.writeString(jsonString)
         }else{
-        
             WebSocketManager.shareWebSocketManager.webSocket!.connect()
         }
 
-        
-        
         let messModel = MessageModel(contents: textField.text!, messageStyle: MessageStyle.MessageStyleRight)
         
         messages.append(messModel)
         
         self.scrollToBottom()
-        /*
-        let indexPath = NSIndexPath(forRow: (messages.count-1), inSection: 0)
-        
-        
-        dispatch_async(dispatch_get_main_queue()) { 
-          
-            self.tableView?.reloadData()
-            ConstantPara.dealyWithTimeInterval(0.12) {
-                
-                self.tableView?.scrollToRowAtIndexPath(indexPath, atScrollPosition: UITableViewScrollPosition.Top, animated: true)
-            }
-
-        }*/
-        
+       
         //同步消息到本地
         ConstantPara.updateCachedWithKey(key, andObj: self.messages)
         
@@ -345,12 +276,7 @@ extension DetailMessageViewController:UITableViewDelegate,UITableViewDataSource,
         return true
     }
     
-    //textField触发
-    func textFieldDidBeginEditing(textField: UITextField) {
-        
-//        self.scrollToBottom()
-    }
-    
+
     //滚动到底部
     func scrollToBottom(){
     
@@ -372,9 +298,7 @@ extension DetailMessageViewController:UITableViewDelegate,UITableViewDataSource,
 
     }
     
-    
-    
-    
+
     //向下滚动
     func scrollViewDidScroll(scrollView: UIScrollView) {
         
@@ -384,9 +308,6 @@ extension DetailMessageViewController:UITableViewDelegate,UITableViewDataSource,
             self.view.layoutIfNeeded()
         }
     }
-    
-    
-    
     
 }
 

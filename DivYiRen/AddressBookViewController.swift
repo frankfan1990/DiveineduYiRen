@@ -10,7 +10,14 @@ import UIKit
 import Alamofire
 import PKHUD
 
-
+/*好友列表*/
+/*在这个列表里:
+ 
+ 未读消息会在这里显示，每一个row都有对应的未读消息数量【为0时不显示】，这个控制器对应的tabBarItem上会有未读消息总量
+ 点击好友row，会跳转到聊天界面，同时对应的未读消息清零
+ 
+ 在这个界面中，左划可以删除对应的好友
+ */
 protocol addressBookFriendListDelegate {
     
     func syndtheFriendList(friendList:Array<String>,unreadMessages:NSMutableArray,tableView:UITableView)
@@ -81,16 +88,6 @@ class AddressBookViewController: UIViewController {
         self.tableView?.reloadData()
         
         //开始建立连接
-        #if false
-        let appdelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        if(appdelegate.webSocket!.isConnected == false){
-        
-            appdelegate.webSocket!.connect()
-        }
-        
-        print(appdelegate.webSocket)
-        #endif
-        
         if(WebSocketManager.shareWebSocketManager.webSocket?.isConnected == false){
         
             WebSocketManager.shareWebSocketManager.webSocket?.connect()
@@ -150,10 +147,6 @@ class AddressBookViewController: UIViewController {
         //
         self.wrap_synWithChatMessageDispatchCenter()
         
-        
-        
-        
-        
     }
     
     deinit{
@@ -185,9 +178,7 @@ class AddressBookViewController: UIViewController {
         }
 
     }
-    
-    
-    
+   
 }
 
 extension AddressBookViewController:UITableViewDelegate,UITableViewDataSource,ViewControllSynChatMessageHistoryDelegate{
@@ -256,16 +247,15 @@ extension AddressBookViewController:UITableViewDelegate,UITableViewDataSource,Vi
             unreadedMessageCountLabel.textColor = UIColor.whiteColor()
             cell?.contentView.addSubview(unreadedMessageCountLabel)
             unreadedMessageCountLabel.font = UIFont.systemFontOfSize(12)
-            #if true
+            
             unreadedMessageCountLabel.snp_makeConstraints(closure: { (make) in
-                
-//                make.top.equalTo((cell?.contentView.snp_top)!).offset(10)
+            
                 make.centerY.equalTo((cell?.contentView)!)
                 make.right.equalTo((cell?.contentView.snp_right)!).offset(-10)
                 make.size.equalTo(CGSizeMake(20, 20))
                 
             })
-            #endif
+            
             
             unreadedMessageCountLabel.layer.cornerRadius = 10
             unreadedMessageCountLabel.layer.masksToBounds = true
@@ -322,6 +312,21 @@ extension AddressBookViewController:UITableViewDelegate,UITableViewDataSource,Vi
                     ConstantPara.updateCachedWithKey((usermodel.userName as String) + ConstantPara.friendListCachedKey, andObj: self.dataList)
                     
                     tableView.reloadData()
+                    
+                    //也要将对应的聊天记录缓存清除和对应的未读消息列表清除
+                    //begin
+                    self.unreadedMessageList?.removeObjectAtIndex(indexPath.row)
+                    
+                    let unreadedMessaheCacheKey = (userModel.userName as String) + ConstantPara.unreadMessageCacheKey
+                    ConstantPara.updateCachedWithKey(unreadedMessaheCacheKey, andObj: self.unreadedMessageList)
+                    
+                    let friendModel = self.dataList![indexPath.row]
+                    
+                    let messageHistoryCacheKey = ((userModel.userName) as String) + ConstantPara.messageHistoryKey + friendModel.username
+                    
+                    ConstantPara.clearCachedWithKey(messageHistoryCacheKey)
+                    //end
+                    
                     
                     HUD.flash(.LabeledSuccess(title: "删除成功", subtitle: nil), delay: 1.2)
                     return
