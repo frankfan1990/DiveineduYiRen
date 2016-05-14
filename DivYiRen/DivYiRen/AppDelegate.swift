@@ -12,28 +12,7 @@ import Starscream
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-    #if false
-    lazy var webSocket:WebSocket? = {
-    
-        if((ConstantPara.cachedObjForKey(ConstantPara.loginedKey)) != nil){
         
-            let userModel:UserModel = (ConstantPara.cachedObjForKey(ConstantPara.loginedKey) as? UserModel)!
-            let socektAPI = ConstantPara.baseSocketChatAPI + "/\((userModel.userName))" + "/\((userModel.session_token))"
-            
-            debugPrint("websocket:\(socektAPI)")
-            
-            var webSocket:WebSocket?
-            webSocket = WebSocket(url: NSURL(string: socektAPI)!, protocols: ["chat"])
-            webSocket!.delegate = ChatMessageDispathCenter.shareMessageCenter
-            
-            return webSocket!
-        }
-        
-        return nil
-        
-    }()
-    #endif
-    
     var window: UIWindow?
     var item3:UITabBarItem?
     var vc:UIViewController{
