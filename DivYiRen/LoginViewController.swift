@@ -37,10 +37,7 @@ class LoginViewController: UIViewController {
         
         basicUIConfig()
         
-        
-        
-        
-        
+       
     }
     
     

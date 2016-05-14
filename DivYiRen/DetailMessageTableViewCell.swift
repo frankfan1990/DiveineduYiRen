@@ -8,7 +8,7 @@
 
 import UIKit
 
-
+//MARK: - 聊天界面的cell
 class DetailMessageTableViewCell: UITableViewCell {
 
     let contentLabel = UILabel()
@@ -61,6 +61,7 @@ class DetailMessageTableViewCell: UITableViewCell {
                 
                 v.snp_remakeConstraints { (make) in
                     
+                
                     make.top.equalTo(self.contentView.snp_top).offset(10)
                     make.right.equalTo(self.contentView.snp_right).offset(-10)
                     make.bottom.equalTo(self.contentView.snp_bottom).offset(-10)
@@ -133,16 +134,5 @@ class DetailMessageTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
-
-    override func setSelected(selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
-
+   
 }

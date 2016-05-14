@@ -6,6 +6,7 @@
 //  Copyright © 2016年 frankfan. All rights reserved.
 //
 
+//MARK: 最近聊天记录列表-cell
 import UIKit
 
 class RecentMessageTableViewCell: UITableViewCell {
@@ -20,7 +21,7 @@ class RecentMessageTableViewCell: UITableViewCell {
         senderLabel.font = UIFont.boldSystemFontOfSize(14)
         senderLabel.textColor = UIColor.blackColor()
         senderLabel.adjustsFontSizeToFitWidth = true
-//        senderLabel.backgroundColor = UIColor.whiteColor()
+
         
         contentLabel = UILabel()
         contentLabel.font = UIFont.systemFontOfSize(14)
@@ -45,7 +46,7 @@ class RecentMessageTableViewCell: UITableViewCell {
             make.left.equalTo(senderLabel.snp_left)
             make.top.equalTo(senderLabel.snp_bottom).offset(5)
             make.bottom.equalTo(self.snp_bottom).offset(-10)
-//            make.right.equalTo(self.snp_right).offset(-40)
+
             make.right.greaterThanOrEqualTo(self.contentView.snp_left).offset(100)
             make.right.lessThanOrEqualTo(self.contentView.snp_right).offset(-50)
         }
@@ -58,16 +59,6 @@ class RecentMessageTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
 
-    override func setSelected(selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
 
 }
