@@ -36,10 +36,7 @@ class ViewController: UIViewController{
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
-        
-        
+
         IQKeyboardManager.sharedManager().enable = false
         IQKeyboardManager.sharedManager().enableAutoToolbar = false
         
@@ -54,16 +51,7 @@ class ViewController: UIViewController{
         
         if(ConstantPara.isKeyCached((usermodel.userName as String) + ConstantPara.friendListCachedKey)){
         
-            //开始建立连接
-            #if false
-            let appdelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-            if(appdelegate.webSocket!.isConnected == false){
-                
-                appdelegate.webSocket!.connect()
-            }
-            #endif
-            
-            
+            //开始建立连接            
             if(WebSocketManager.shareWebSocketManager.webSocket!.isConnected == false){
             
                 let userModel:UserModel = (ConstantPara.cachedObjForKey(ConstantPara.loginedKey) as? UserModel)!

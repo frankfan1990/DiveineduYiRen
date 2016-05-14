@@ -10,6 +10,11 @@ import UIKit
 import PKHUD
 import Alamofire
 
+//MARK: 
+/*
+这个页面主要是处理登陆注册，若登陆成功则发送通知，切换根视图控制器，并在本地创建一个以用户名为名称的本地文件，该文件中记录用户的用户的用户名和session_toekn
+ 之后的逻辑中利用该文件存不存在为依据来判断用户是否登陆/注销
+*/
 class LoginViewController: UIViewController {
     
     var loginLabel:UILabel?
@@ -46,7 +51,7 @@ class LoginViewController: UIViewController {
     
     func basicUIConfig(){
         
-                    
+        
         //MARK: - 用户名输入
         nameInput = self.createTextFieldWith(2001, placeholder: "请输入用户名")
         view.addSubview(nameInput!)
@@ -128,9 +133,6 @@ class LoginViewController: UIViewController {
         }
         
        
-        
-        
-        
         confirmCodeImage = UIImageView()
         confirmCodeImage!.backgroundColor = UIColor(red: 0.75, green: 0.75, blue: 0.75, alpha: 0.65)
         confirmCodeImage?.layer.cornerRadius = 5
@@ -231,6 +233,20 @@ class LoginViewController: UIViewController {
                 
                 let status = resultDict["status"] as! Int
                 
+                let reason = StatusCode.reasonPhraseForStatusCode(StatusCode(rawValue: status)!)
+                if(status == 200){
+                
+                    self.clearTheInputField()
+                    
+                }else if(status == 202){
+                
+                    self.wrapFetchConfirmData()
+                }
+                
+                HUD.flash(.LabeledError(title: reason, subtitle: nil), delay: 1.2)
+                
+              
+                #if false
                 switch status{
                     
                 case 200:
@@ -252,6 +268,7 @@ class LoginViewController: UIViewController {
                 default:
                     break
                 }
+                #endif
                 
                 
             }catch{
@@ -305,7 +322,6 @@ class LoginViewController: UIViewController {
             let userm = UserModel(userName: username, session_token: jsonDict["session_token"] as! String)
 
 
-//            ConstantPara.keyCaching(ConstantPara.loginedKey, withObj: userm)
             //同步本地用户信息
             ConstantPara.updateCachedWithKey(ConstantPara.loginedKey, andObj: userm)
             
@@ -365,12 +381,17 @@ class LoginViewController: UIViewController {
                         ConstantPara.updateCachedWithKey(tkey, andObj: verifys)
                     }
                     
+                    /*这个地方的逻辑是:
+                     等到登陆成功才去获取好友列表，而只有获取到好友列表才切换根视图控制器，意味着进入到主界面时，已经获取到好友列表了【好友列表中可以没有好友】，获取后，好友列表保存在本地
+                     */
+                    
                     //切换控制器
                     NSNotificationCenter.defaultCenter().postNotificationName(ConstantPara.notiKey, object: nil)
                     
+                    
                     //重构后这里没必要了
-                    //这里的网络是异步的，因此为了保证好友列表能够得到及时的更新，当获取到数据时实时发送通知
                     NSNotificationCenter.defaultCenter().postNotificationName(ConstantPara.synFriendsListKey, object: nil)
+                    
                     return
                 }
                 
@@ -420,7 +441,6 @@ extension LoginViewController:UITextFieldDelegate{
         
         Alamofire.request(.POST, ConstantPara.registerAPI, parameters: [ConstantPara.username:(nameInput?.text)!,"type":"image"], encoding: .JSON, headers: nil).responseJSON{ response in
             
-            
             do{
                 
                 let json = try NSJSONSerialization.JSONObjectWithData(response.data!, options: .AllowFragments)
@@ -448,7 +468,6 @@ extension LoginViewController:UITextFieldDelegate{
     
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        
         
             self.view.endEditing(true)
         
